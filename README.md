@@ -23,6 +23,15 @@ Download the GraphStream plugin from the [Gephi Plugin Marketplace](https://mark
 [Install `deap`](http://deap.readthedocs.io/en/master/installation.html).
 
 # Usage
+`$ python onemax.py`
+Or with a few trivial changes, you could run an ipython session. You'll be able to inspect `POP`.
+```
+$ipython
+>>> from onemax import *
+>>> POP
+...
+...
+```
 
 # Results
 
