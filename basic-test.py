@@ -1,7 +1,3 @@
-"""
-This is probably how usual peaviz powered deap programs would look like...
-"""
-
 import deap.creator
 import deap.base
 import deap.tools
@@ -29,6 +25,7 @@ def breed(algorithm, parents):
 		offspring.tracker.deploy()
 	return algorithm(*parents)
 
+
 # add any other default args to the tracker here:
 deap.creator.create("tracker", peaviz.Tracker, hub=trackerHub)
 
@@ -55,34 +52,62 @@ toolbox.register("select", deap.tools.selTournament, tournsize=3)
 POP = toolbox.population(n=10)
 CXPB, MUTPB, NGEN = 0.4, 0.1, 35
 
-def main():
-	random.seed(time.time())
-	pop = toolbox.population(n=20)
+def show(msg=None, p=POP):
+	if msg:
+		print(msg)
+	for i in p:
+		print("%2d %r %r %r" % (i.tracker.index, i.tracker.parents, i.fitness.values, i))
 
-	fitnesses = list(toolbox.map(toolbox.evaluate, pop))
-	for ind, fit in zip(pop, fitnesses):
+def evalt():
+	fitnesses = list(toolbox.map(toolbox.evaluate, POP))
+	for ind, fit in zip(POP, fitnesses):
 		ind.fitness.values = fit
 
-	for g in range(NGEN):
-		print("--G %2d" % g)
-		pick = toolbox.select(pop, len(pop))
-		pick = list(toolbox.map(toolbox.clone, pick))
+def sel():
+	pick = toolbox.select(POP, len(POP))
+	return list(toolbox.map(toolbox.clone, pick))
 
-		for c1, c2 in zip(pick[::2], pick[1::2]):
-			if random.random() < CXPB:
-				toolbox.mate((c1, c2))
-				del c1.fitness.values
-				del c2.fitness.values
-		for mut in pick:
-			if random.random() < MUTPB:
-				toolbox.mutate(mut)
-				del mut.fitness.values
-		invalids = [ind for ind in pick if not ind.fitness.valid]
-		fitnesses = list(toolbox.map(toolbox.evaluate, invalids))
-		for ind, fit in zip(invalids, fitnesses):
-			ind.fitness.values = fit
+def cross(pick):
+	for c1, c2 in zip(pick[::2], pick[1::2]):
+		if random.random() < CXPB:
+			toolbox.mate((c1, c2))
+			del c1.fitness.values
+			del c2.fitness.values
 
-		pop[:] = pick
+def mut(pick):
+	for mut in pick:
+		if random.random() < MUTPB:
+			toolbox.mutate(mut)
+			del mut.fitness.values
 
-if __name__ == '__main__':
-	main()
+def re_eval(pick):
+	invalids = [ind for ind in pick if not ind.fitness.valid]
+	fitnesses = list(toolbox.map(toolbox.evaluate, invalids))
+	for ind, fit in zip(invalids, fitnesses):
+		ind.fitness.values = fit
+
+def script():
+	evalt()
+	show()
+	os = sel()
+	show('os', os)
+	cross(os)
+	show('crossed os', os)
+	mut(os)
+	show('mut os', os)
+	re_eval(os)
+	show('re-evaluated', os)
+	print('\nTrackers:', len(trackerHub), '\n')
+	POP[:] = os
+	
+	show()
+	os = sel()
+	show('os', os)
+	cross(os)
+	show('crossed os', os)
+	mut(os)
+	show('mut os', os)
+	re_eval(os)
+	show('re-evaluated', os)
+	print('\nTrackers:', len(trackerHub))
+script()

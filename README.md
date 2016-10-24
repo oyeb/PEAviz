@@ -18,21 +18,33 @@ The result of PEAViz analysis is a graph, which _could_ be a CN. Gephi is one of
 With the GraphStream API we can not only monitor the evolution dynamics in real-time, but can also send feedback into the (DEAP) evolution process. Imagine the power of GAs when they are _self_-governed over a feedback loop!
 
 # Setup
-[Install Gephi](https://gephi.org/users/install/) for your system.
+
+1. [Install Gephi](https://gephi.org/users/install/) for your system.
 Download the GraphStream plugin from the [Gephi Plugin Marketplace](https://marketplace.gephi.org/). Installation instructions are [here](https://marketplace.gephi.org/faq/).
-[Install `deap`](http://deap.readthedocs.io/en/master/installation.html).
+2. [Install `deap`](http://deap.readthedocs.io/en/master/installation.html). I recommend that you clone the source repository in addition to installation.
+3. Clone [my fork](https://github.com/arrow-/GephiStreamer) of [GephiStreamer](https://github.com/totetmatt/GephiStreamer/) into `PEAviz/`
+4. Install GephiStreamer by:
+```sh
+$ pwd
+> .../PEAviz/GephiStreamer
+$ sudo python setup.py install
+```
 
 # Usage
-`$ python onemax.py`
+`$ python basic-test.py`
 Or with a few trivial changes, you could run an ipython session. You'll be able to inspect `POP`.
 ```
-$ipython
->>> from onemax import *
+$   ipython
+>>> from basic-test import *
 >>> POP
 ...
-...
 ```
+
+`onemax.py` is an illustrative example of the module.
+
+>**Note**
+Only scripts placed in `PEAviz/` will be _(automatically)_ able to detect and use the `peaviz` module.
 
 # Results
 
-This work is part of our Undergaduate Degree Course Work.
+_This work is part of our Undergaduate Degree Course Work._
