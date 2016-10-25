@@ -30,7 +30,7 @@ def breed(algorithm, parents):
 	return algorithm(*parents)
 
 # add any other default args to the tracker here:
-deap.creator.create("tracker", peaviz.Tracker, hub=trackerHub)
+deap.creator.create("tracker", peaviz.Tracker, hub=trackerHub, size=20)
 
 # a normal (deap) fitness vector
 deap.creator.create("maximize", deap.base.Fitness, weights=(1.0,))
@@ -42,7 +42,7 @@ toolbox = deap.base.Toolbox()
 toolbox.register("attr", random.randint, 0, 1)
 
 # `maker` takes responsibility to properly configure the tracker
-toolbox.register("individual", maker, deap.creator.Individual, toolbox.attr, 4)
+toolbox.register("individual", maker, deap.creator.Individual, toolbox.attr, 40)
 toolbox.register("population", deap.tools.initRepeat, list, toolbox.individual)
 
 # `myFitness` is a simple function, which additionall keeps the tracker updated
@@ -57,7 +57,7 @@ CXPB, MUTPB, NGEN = 0.4, 0.1, 35
 
 def main():
 	random.seed(time.time())
-	pop = toolbox.population(n=20)
+	pop = toolbox.population(n=80)
 
 	fitnesses = list(toolbox.map(toolbox.evaluate, pop))
 	for ind, fit in zip(pop, fitnesses):

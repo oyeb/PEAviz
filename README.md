@@ -40,11 +40,21 @@ $   ipython
 ...
 ```
 
-`onemax.py` is an illustrative example of the module.
+**`onemax.py` is an illustrative example of the module.**
 
 >**Note**
 Only scripts placed in `PEAviz/` will be _(automatically)_ able to detect and use the `peaviz` module.
 
 # Results
+**Testing `onemax.py`**
+
+Force Atlas Layout: [Animated `gif` (2.5MB)][onemax-gif-raw]
+
+A different layout of the same graph:
+![img-onemax-gephi-sfdp][graphviz-gif]
 
 _This work is part of our Undergaduate Degree Course Work._
+
+[onemax-gif]: docs/images/onemax.gif "Animated gif of OneMax GA"
+[onemax-gif-raw]: https://raw.githubusercontent.com/arrow-/PEAviz/master/docs/images/onemax.gif
+[graphviz-gif]: docs/images/graphviz-sfdp.png "Animated gif of OneMax GA"
