@@ -88,7 +88,7 @@ class Tracker:
 	def insertNode(self, location=None, pop_size=500):
 		x_extent = y_extent = pop_size
 		attributes = {'gen'     : self.gen,
-					  'fitness' : compact_str(self.fitness),
+					  'fitness' : sum(self.fitness),
 					  'parents' : compact_str(self.parents),
 					  'x'       : random.randint(-x_extent, x_extent),
 					  'y'       : random.randint(-y_extent, y_extent)

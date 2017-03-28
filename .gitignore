@@ -90,7 +90,12 @@ ENV/
 
 # Documentation
 *.pdf
+docs/images*
 
 # Presentations
 *.pptx
 *.ppt
+
+# Other
+[gG]ephi*
+deap/*
