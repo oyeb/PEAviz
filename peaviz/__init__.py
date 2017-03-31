@@ -7,3 +7,4 @@ __author__ = 'Ananya Bahadur'
 __verison__ = '0.0'
 from .tracker import Tracker, TrackerHub
 from .neo4jAdapter import Neo4jAdapter, NeoNode, ParentOf
+from .newtracker import TrackerBase
