@@ -7,7 +7,7 @@ information is used to create the Complex Network.
 As long as DEAP individuals remember their concrete ID, this should work :)
 """
 
-class PEAvizAttributeError(TypeError):
+class PEAvizTrackerAttributeError(TypeError):
     """
     Supplied attribute is not of expected type (list, dict) or in case of list
     is of incorrect size
@@ -18,8 +18,14 @@ class TrackerBase:
     MIRROR_TAG = 'EVOLVE'
     PARENT_TAG = 'PARENT_OF'
 
-    def __init__(self, adapterClass):
-        self.adapter = adapterClass()
+    def __init__(self, adapterClass, **kwargs):
+        """
+        @brief      Constructs the object.
+        
+        @param      adapterClass  The adapter class to use
+        @param      kwargs        The arguments to the adapter class constructor
+        """
+        self.adapter = adapterClass(**kwargs)
 
     def deploy(self, individual, gen=0):
         """
@@ -31,7 +37,7 @@ class TrackerBase:
         
         @return     The **concrete ID** of this individual.
         """
-        concreteID = self.adapter.create(
+        concreteID = self.adapter.add_node(
             gene = individual,
             gen  = gen)
         return concreteID
@@ -61,11 +67,11 @@ class TrackerBase:
         @return     Returns _concrete IDs_ of the edges.
         """
         if type(otherAttrs) == dict:
-            _otherAttrs = list(attr)*len(parentIDs)
-        else if type(otherAttrs) == list:
+            _otherAttrs = [otherAttrs]*len(parentIDs)
+        elif type(otherAttrs) == list:
             _otherAttrs = otherAttrs
         else:
-            raise PEAvizAttributeError()
+            raise PEAvizTrackerAttributeError()
 
         edgeIDs = []
         for parentID, otherAttr in zip(parentIDs, _otherAttrs):
@@ -93,7 +99,7 @@ class TrackerBase:
         else:
             return None
 
-    def self.add_edge(self, TAG, srcID, destID, gen, attrs):
+    def add_edge(self, TAG, srcID, destID, gen, attrs):
         attrs['gen'] = gen
         return self.adapter.add_edge(TAG, srcID, destID, attrs)
 
@@ -103,25 +109,6 @@ class TrackerBase:
     def getRawEdge(self, edgeID):
         return self.adapter.getEdge(edgeID)
 
-class AdapterBase():
-
-    def create(self, gene, gen=0, fitness=None, score=None, **kwargs):
-        pass
-
-    def getNode(self, nodeID):
-        pass
-
-    def getEdge(self, edgeID):
-        pass
-
-    def add_edge(self, TAG, srcID, destID, attrs):
-        pass
-
-    def fetchIndividual(self, individual):
-        pass
-
-    def walk_edge(self, TAG, startID):
-        pass
-
-    def update_fitness(self, nodeID, fitness):
-        pass
+    def save(self):
+        file_location = self.adapter.save()
+        print('GRAPH SAVED TO:', file_location)

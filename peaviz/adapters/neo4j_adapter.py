@@ -41,15 +41,18 @@ class Neo4jAdapter:
         if watch:
             py2neo.watch('neo4j.bolt')
 
-class NeoNode(py2neo.ogm.GraphObject):
-    __primary_label__ = "I"
-    gene = py2neo.ogm.Property("gene")
-    generation = py2neo.ogm.Property("gen")
-    fitness = py2neo.ogm.Property("fitness")
-    score = py2neo.ogm.Property("score")
+class NeoNode:
 
-    parents = py2neo.ogm.RelatedFrom("NeoNode", "PARENT_OF")
-    mirror = py2neo.ogm.RelatedTo("NeoNode", "MIRROR")
+#class NeoNode(py2neo.ogm.GraphObject):
+    # __primary_label__ = "I"
+    # gene = py2neo.ogm.Property("gene")
+    # generation = py2neo.ogm.Property("gen")
+    # fitness = py2neo.ogm.Property("fitness")
+    # score = py2neo.ogm.Property("score")
+
+    # parents = py2neo.ogm.RelatedFrom("NeoNode", "PARENT_OF")
+    # mirror = py2neo.ogm.RelatedTo("NeoNode", "MIRROR")
+    pass
     
 class Evolve(py2neo.Relationship):
     pass
