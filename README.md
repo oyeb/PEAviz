@@ -41,6 +41,9 @@ Encoding Strategy
 
 Tracker
 :   Your GA creates an instance of this and connects it to the desired Adapter(s). Tracker uses the Encoding Strategy to invoke Adapter methods and create the desired evolutionary network.
+
+![architecture][arch]
+
 >Trackers and Encoding Strategy are highly coupled, ie, a new Tracker is required for a new Encoding Strategy.
 
 ## Elements
@@ -54,7 +57,7 @@ Tracker
 3. Encoding Strategies
     - Default Strategy :100:
 
->:100: denotes completed.
+>:100: denotes completed.<br>
 >:soon: denotes future goals.
 
 # Usage
@@ -78,7 +81,7 @@ GT is an excellent python package which allows scripted analysis [Graph filterin
 
 # Installation
 
-_PEAviz has not yet been pacakged, see #_
+_PEAviz has not yet been pacakged, see #5_
 
 1. Install the python requirements:
     - `pip install -r requirements.txt`
@@ -92,8 +95,14 @@ Force Atlas Layout: [Animated `gif` (2.5MB)][onemax-gif-raw]
 A different layout of the same graph:
 ![img-onemax-gephi-sfdp][graphviz-gif]
 
+A _different_ graph:
+![knapsack-filtered-graph][filtered_graph]
+
 _This work is part of our Undergraduate Degree Course Work._
 
 [onemax-gif]: docs/images/onemax.gif "Animated gif of OneMax GA"
 [onemax-gif-raw]: https://raw.githubusercontent.com/arrow-/PEAviz/master/docs/images/onemax.gif
 [graphviz-gif]: docs/images/graphviz-sfdp.png "Animated gif of OneMax GA"
+
+[filtered_graph]: docs/images/g_filt.png "Filtered graph of Knapsack GA"
+[arch]: docs/images/PEAviz_arch.png "PEAviz Architecture"
