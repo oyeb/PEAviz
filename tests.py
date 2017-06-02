@@ -35,7 +35,9 @@ def real_breed(algorithm, *parents, generation, otherAttrs):
 	                               # children is a shallow copy of parents
 	# need to evaluate it here, as later steps will modify cid!
 	parentConcreteIds = list(map(lambda p: p.cid, parents))
-	# this does not set Cids but just creates nodes in the adapter
+	# this does not set Cids but just creates nodes in the adapter We can lazy
+    # evaluate here, as this is expanded in the for loop below, luckily at the
+    # right time.
 	newConcreteIds = map(TRACKER.deploy, children)
 
 	for child, newCid in zip(children, newConcreteIds):

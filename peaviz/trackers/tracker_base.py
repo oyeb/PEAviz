@@ -52,7 +52,17 @@ class TrackerBase:
         """
         self.adapter.update_fitness(indID, fitness)
 
-    def setParents(self, childID, parentIDs, gen, otherAttrs):
+    def updateScore(self, indID, score):
+        """
+        @brief      Used to update/set fitness of an individual that has been
+                    **deployed**.
+
+        @param      indID  The individual ID
+        @param      score  The score
+        """
+        self.adapter.update_score(indID, score)
+
+    def setParents(self, childID, parentIDs, gen, otherAttrs={}):
         """
         @brief      Inserts PARENT_OF edges between the parents and child.
         
@@ -112,3 +122,6 @@ class TrackerBase:
     def save(self):
         file_location = self.adapter.save()
         print('GRAPH SAVED TO:', file_location)
+
+    def numNodes(self):
+        return self.adapter.numNodes()

@@ -90,7 +90,7 @@ ENV/
 
 # Documentation
 *.pdf
-docs/images*
+docs/images/*max
 
 # Presentations
 *.pptx

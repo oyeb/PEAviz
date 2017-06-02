@@ -85,3 +85,6 @@ class GraphAdapter(AdapterBase):
         filename = os.path.join('graphs', self.name) + '.' + self.file_extension
         self.graph.save(filename)
         return filename
+
+    def numNodes(self):
+        return self.graph.num_vertices()
