@@ -3,6 +3,8 @@
 Installation and Usage
 ======================
 
+.. _install:
+
 Installation
 ------------
 
@@ -17,7 +19,7 @@ Installation
 Usage
 -----
 
-.. seealso:: :ref:`arch:Architecture`
+.. seealso:: :ref:`Architecture <arch_docs>`
 
 * Implement your GA in DEAP_.
 * Use ``peaviz`` elements to track the dynamics.

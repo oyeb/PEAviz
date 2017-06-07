@@ -1,5 +1,7 @@
 .. include:: role_defs.rst
 
+.. _arch_docs:
+
 Architecture
 ============
 

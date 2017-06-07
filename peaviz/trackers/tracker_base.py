@@ -1,41 +1,72 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-Track evolution dynamics like individual interactions, fitness statistics. This
-information is used to create the Complex Network.
-
-As long as DEAP individuals remember their concrete ID, this should work :)
-"""
 
 class PEAvizTrackerAttributeError(TypeError):
     """
-    Supplied attribute is not of expected type (list, dict) or in case of list
-    is of incorrect size
+    Supplied attribute is not of type (``list`` or ``dict``) or the ``list``
+    is of incorrect size.
     """
 
 class TrackerBase:
+    """
+    A tracker connects with one or multiple adapters and this super class
+    provides a clean, unified interface for tracking of all GA programs.
 
+    Trackers must:
+    
+    #. Bind an individual of the population with the :attr:`adapter`'s data 
+       structure using a (unique) ``integer`` ID.
+    #. Provide a means to update an individual's
+
+        - fitness vector
+        - score
+        - parents
+    #. Provide access the :attr:`adapter`'s underlying ``node`` and ``edge``
+       objects.
+    #. Provide a method to save/commit the network in/of the :attr:`adapter` to a
+       persistent storage
+
+    Todo:
+        #. :red:`This ain't no base class!`
+        #. Must allow connection with multiple adapters!
+        #. Make definition in glossary for ``fitness``, ``score``.
+        #. Expose multiple raw nodes which all represent the same individual.
+    """
+
+    #: ``EVOLVE`` Edge type.
     MIRROR_TAG = 'EVOLVE'
+    #: ``PARENT_OF`` Edge type.
     PARENT_TAG = 'PARENT_OF'
+
+    __attrs__ = ['adapter']
 
     def __init__(self, adapterClass, **kwargs):
         """
-        @brief      Constructs the object.
-        
-        @param      adapterClass  The adapter class to use
-        @param      kwargs        The arguments to the adapter class constructor
+        **Constructor**
+
+        Args:
+            adapterClass (peaviz.adapters.AdapterBase) : The adapter class to use with the Tracker
+        Keyword Args: 
+            kwargs: Passed directly to the constructor of ``adapterClass``.
         """
+
+        #:  A concrete implementation of the
+        #: :class:`~peaviz.adapters.AdapterBase` interface.
+        #:
+        #: #. peaviz.adapters.GraphAdapter
+        #: #. peaviz.adapters.Neo4jAdapter
         self.adapter = adapterClass(**kwargs)
 
     def deploy(self, individual, gen=0):
         """
-        @brief      Creates a binding uusing the Adapter to a concrete Node
-                    object.
+        Binds this ``individual`` with the :attr:`adapter`.
         
-        @param      individual  The individual (DEAP objects are usually the genes) is set as the **gene**
-        @param      gen         The generation in which the individual was created.
+        Args:
+            individual: The individual created using the :func:`deap.creator.create() <deap:deap.creator.create>`.
+            gen (int):  The generation in which the individual was created.
         
-        @return     The **concrete ID** of this individual.
+        Returns:
+            int: The (unique) concrete ID of this individual.
         """
         concreteID = self.adapter.add_node(
             gene = individual,
@@ -44,37 +75,52 @@ class TrackerBase:
 
     def updateFitness(self, indID, fitness):
         """
-        @brief      Used to update/set fitness of an individual that has been
-                    **deployed**.
+        Used to update/set fitness of an individual that has been 
+        "\ :meth:`~peaviz.trackers.TrackerBase.deploy`\ ed".
         
-        @param      indID    The individual ID
-        @param      fitness  The new fitness
+        Args:
+            indID (int): The individual (concrete) ID.
+            fitness: The new fitness.
+
+        Todo:
+            Link ``fitness`` from glossary.
         """
         self.adapter.update_fitness(indID, fitness)
 
     def updateScore(self, indID, score):
         """
-        @brief      Used to update/set fitness of an individual that has been
-                    **deployed**.
+        Used to update/set fitness of an individual that has been
+        "\ :meth:`~peaviz.trackers.TrackerBase.deploy`\ ed".
+        
+        Args:
+            indID (int): The individual (concrete) ID.
+            fitness: The new score.
 
-        @param      indID  The individual ID
-        @param      score  The score
+        Todo:
+            Link ``score`` from glossary.
         """
         self.adapter.update_score(indID, score)
 
     def setParents(self, childID, parentIDs, gen, otherAttrs={}):
         """
-        @brief      Inserts PARENT_OF edges between the parents and child.
+        Inserts ``PARENT_OF`` edges between the parents and child.
         
-        @param      childID     The child ID
-        @param      parentIDs   The parent IDs (``list``)
-        @param      otherAttrs  The attributes of the edges. This must be a
-                                ``list`` of ``dict``s or a single ``dict``. If
-                                ``list`` then otherAttrs are set per edge in
-                                same order as in ``parentIDs`` else, the single
-                                ``dict`` is applied to both edges.
+        Args:
+            childID (int): The child ID
+            parentIDs (int): The parent IDs (``list``)
+            otherAttrs: The attributes of the edges
+
+        :type otherAttrs: list(dict) or dict
         
-        @return     Returns _concrete IDs_ of the edges.
+        Note:
+            ``otherAttrs`` can be used in two ways,
+
+            #. If both edges must have the same attributes, just pass in a single dict.
+            #. Else provide a list(dict) with dicts in order corresponding to
+               the order in ``parentIDs``.
+        
+        Returns:
+            int: *Concrete* IDs of the edges.
         """
         if type(otherAttrs) == dict:
             _otherAttrs = [otherAttrs]*len(parentIDs)
@@ -89,17 +135,27 @@ class TrackerBase:
             edgeIDs.append(edgeID)
         return edgeIDs
 
-    def checkAndAddMirror(self, newID, individual, gen, otherAttrs):
+    def checkAndAddMirror(self, newID, individual, gen, attrs):
         """
-        @brief      Checks with adapter if this individual already exists. If
-                    so, adds an appropriate edge to maintain the chain of EVOLVE nodes.
+        .. warning:: *This method is deprecated?*
+
+
+        Use this method to insert new individuals into the graph.
+
+        As noted :red:`here`, the generated individual might already exist in
+        the graph.
+
+        Todo:
+            Remove this along with other ``EVOLVE`` edge crap.
+
+        Args:        
+            newID (int): The new id
+            individual (int): The individual
+            gen (int): The generation
+            attrs (dict): Any other attributes for the edge.
         
-        @param      newID       The new id
-        @param      individual  The individual
-        @param      gen         The generation
-        @param      otherAttrs  The attributes
-        
-        @return     Edge ID if an edge was added, else None
+        Returns:
+            int: *Concrete* ID of the inserted edge, if one was added, else None.
         """
         oldID = self.adapter.fetchIndivdual(individual)
         if oldID is not None:
@@ -110,18 +166,67 @@ class TrackerBase:
             return None
 
     def add_edge(self, TAG, srcID, destID, gen, attrs):
+        """
+        Adds an edge between source and destination individuals of type
+        ``TAG``.
+
+        Todo:
+            Remove ``EVOLVE``.
+
+        Args:
+            TAG (str): The type of edge, ``PARENT_OF`` or ``EVOLVE``.
+            srcID (int): The *concrete* ID of the source individual.
+            destID (int): The *concrete* ID of the destination individual.
+            gen (int): The current generation.
+            attrs (dict): Any other attributes for the edge.
+        
+        Returns:
+            int: *Concrete* ID of the inserted edge.
+        """
         attrs['gen'] = gen
         return self.adapter.add_edge(TAG, srcID, destID, attrs)
 
     def getRawNode(self, indID):
+        """        
+        Args:
+            indID (int): The *concrete* ID of the individual.
+
+        .. tip::
+            There might be multiple nodes encoding the same individual.
+
+        Returns:
+            object: The :attr:`adapter <peaviz.trackers.TrackerBase.adapter>`'s
+            underlying ``Node`` object.
+        """
         return self.adapter.getNode(indID)
 
     def getRawEdge(self, edgeID):
+        """
+        Args:
+            edgeID (int): The *concrete* ID of the edge.
+
+        Returns:
+            object: The :attr:`adapter <peaviz.trackers.TrackerBase.adapter>`'s
+            underlying ``Edge`` object.
+        """
         return self.adapter.getEdge(edgeID)
 
     def save(self):
+        """
+        Save the :attr:`adapter`'s network/graph representation to persistent 
+        storage and/or close any resources used by the :attr:`adapter`.
+        """
         file_location = self.adapter.save()
         print('GRAPH SAVED TO:', file_location)
 
     def numNodes(self):
+        """
+        Returns:
+            int: The number of nodes in the :attr:`adapter`'s network/graph
+            representation.
+
+        Note:
+            This is not the same as number of individuals evaluated/
+            generated by the GA.
+        """
         return self.adapter.numNodes()

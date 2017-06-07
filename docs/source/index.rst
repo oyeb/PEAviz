@@ -8,7 +8,7 @@ Welcome to PEAviz's documentation!
 
 *Python Evolutionary Algorithm Visualistaion toolkit on DEAP*
 
-Release v\ |release|. (:ref:`install_use:Installation`)
+Release v\ |release|. (:ref:`Installation <install>`)
 
 .. image:: https://requires.io/github/arrow-/PEAviz/requirements.svg?branch=master
    :alt: requirement's status
@@ -20,10 +20,10 @@ Release v\ |release|. (:ref:`install_use:Installation`)
 
    arch
    install_use
-   trash
    trackers
    adapters
    encoding_strategy
+   algorithms
 
 Introduction
 ------------

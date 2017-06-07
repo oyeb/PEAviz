@@ -1,5 +1,6 @@
 import random
 
+
 def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
     """Part of an evolutionary algorithm applying only the variation part
     (crossover **and** mutation). The modified individuals have their
@@ -12,7 +13,8 @@ def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
     :param cxpb: The probability of mating two individuals.
     :param mutpb: The probability of mutating an individual.
     :param generation: The current evolution generation, needed for tracking.
-    :param otherAttrs: Any other optional attributes for all `PARENT_OF` edges in this generation.
+    :param otherAttrs: Any other optional attributes for all `PARENT_OF` edges
+                       in this generation.
     :returns: A list of varied individuals that are independent of their
               parents.
 
@@ -36,6 +38,11 @@ def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
     crossover only, mutation only, crossover and mutation, and reproduction
     according to the given probabilities. Both probabilities should be in
     :math:`[0, 1]`.
+
+    .. important::
+        List of modifications,
+
+        #. Added parameters ``generation`` and ``otherAttrs``.        
     """
     offspring = [toolbox.clone(ind) for ind in population]
 
@@ -68,7 +75,7 @@ def varOr(population, toolbox, lambda_, cxpb, mutpb, generation, otherAttrs={}):
     :param cxpb: The probability of mating two individuals.
     :param mutpb: The probability of mutating an individual.
     :returns: The final population
-    :returns: A class:`~deap.tools.Logbook` with the statistics of the
+    :returns: A :class:`~deap.tools.Logbook` with the statistics of the
               evolution
 
     The variation goes as follow. On each of the *lambda_* iteration, it
@@ -89,6 +96,11 @@ def varOr(population, toolbox, lambda_, cxpb, mutpb, generation, otherAttrs={}):
     both operations crossover and mutation. The sum of both probabilities
     shall be in :math:`[0, 1]`, the reproduction probability is
     1 - *cxpb* - *mutpb*.
+
+    .. important::
+        List of modifications,
+
+        #. Added parameters ``generation`` and ``otherAttrs``. 
     """
     assert (cxpb + mutpb) <= 1.0, ("The sum of the crossover and mutation "
                                    "probabilities must be smaller or equal to 1.0.")

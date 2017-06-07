@@ -36,7 +36,7 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
-    'sphinx.ext.autosectionlabel']
+    'sphinx.ext.intersphinx']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -172,6 +172,8 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
+autodoc_member_order = 'bysource'
+
 # Napoleon settings
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
@@ -179,12 +181,12 @@ napoleon_include_init_with_doc = False
 napoleon_include_private_with_doc = False
 napoleon_include_special_with_doc = True
 napoleon_use_admonition_for_examples = False
-napoleon_use_admonition_for_notes = False
+napoleon_use_admonition_for_notes = True
 napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
 
-# AutoSectionLabel setting
-# True to prefix each section label with the name of the document it is in, followed by a colon.
-autosectionlabel_prefix_document = True
+# InterSphinx Settings
+
+intersphinx_mapping = {'deap' : ('http://deap.readthedocs.io/en/latest', None)}

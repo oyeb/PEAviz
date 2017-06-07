@@ -8,9 +8,7 @@ from deap import base
 from deap import creator
 from deap import tools
 
-import peaviz.trackers
-import peaviz.adapters
-import peaviz.algorithms
+import peaviz
 
 IND_INIT_SIZE = 5
 MAX_ITEM = 15
