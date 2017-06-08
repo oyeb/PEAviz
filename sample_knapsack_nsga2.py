@@ -32,8 +32,8 @@ def evalKnapsack(individual):
     if len(individual) > MAX_ITEM or weight > MAX_WEIGHT:
         return 10000, 0             # Ensure overweighted bags are dominated
     fitness = weight, value
-    tracker.updateFitness(individual.cid, fitness)
-    tracker.updateScore(individual.cid, sum(map(operator.mul, individual.fitness.weights, fitness)))
+    tracker.update_fitness(individual.cid, fitness)
+    tracker.update_score(individual.cid, sum(map(operator.mul, individual.fitness.weights, fitness)))
     return fitness
 
 def breedAndTrack(algorithm, *parents, generation, otherAttrs):
@@ -52,7 +52,7 @@ def breedAndTrack(algorithm, *parents, generation, otherAttrs):
 
     for child, newCid in zip(children, newConcreteIds):
         child.cid = newCid
-        edgeIDs = tracker.setParents(
+        edgeIDs = tracker.set_parents(
             newCid,
             parentConcreteIds,
             generation, otherAttrs)
@@ -151,7 +151,7 @@ def doWithNSGA2(seed, logbook, stats):
         logbook.record(gen=gen, nevals=nevals, **record)
         print(logbook.stream)
     
-    print('Total: %d' % tracker.numNodes())
+    print('Total: %d' % tracker.num_nodes())
     print("\nwriting to file...")
     tracker.save()
     return pop

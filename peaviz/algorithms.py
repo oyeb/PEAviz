@@ -1,8 +1,14 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+"""
+copied from deap basically
+"""
+
 import random
 
-
 def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
-    """Part of an evolutionary algorithm applying only the variation part
+    r"""Part of an evolutionary algorithm applying only the variation part
     (crossover **and** mutation). The modified individuals have their
     fitness invalidated. The individuals are cloned so returned population is
     independent of the input population.
@@ -42,7 +48,7 @@ def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
     .. important::
         List of modifications,
 
-        #. Added parameters ``generation`` and ``otherAttrs``.        
+        #. Added parameters ``generation`` and ``otherAttrs``.
     """
     offspring = [toolbox.clone(ind) for ind in population]
 
@@ -63,7 +69,7 @@ def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
     return offspring
 
 def varOr(population, toolbox, lambda_, cxpb, mutpb, generation, otherAttrs={}):
-    """Part of an evolutionary algorithm applying only the variation part
+    r"""Part of an evolutionary algorithm applying only the variation part
     (crossover, mutation **or** reproduction). The modified individuals have
     their fitness invalidated. The individuals are cloned so returned
     population is independent of the input population.
@@ -100,7 +106,7 @@ def varOr(population, toolbox, lambda_, cxpb, mutpb, generation, otherAttrs={}):
     .. important::
         List of modifications,
 
-        #. Added parameters ``generation`` and ``otherAttrs``. 
+        #. Added parameters ``generation`` and ``otherAttrs``.
     """
     assert (cxpb + mutpb) <= 1.0, ("The sum of the crossover and mutation "
                                    "probabilities must be smaller or equal to 1.0.")
@@ -111,8 +117,8 @@ def varOr(population, toolbox, lambda_, cxpb, mutpb, generation, otherAttrs={}):
         if op_choice < cxpb:            # Apply crossover
             ind1, ind2 = map(toolbox.clone, random.sample(population, 2))
             ind1, ind2 = toolbox.mate(ind1, ind2,
-                generation=generation,
-                otherAttrs=otherAttrs)
+                                      generation=generation,
+                                      otherAttrs=otherAttrs)
             del ind1.fitness.values
             offspring.append(ind1)
         elif op_choice < cxpb + mutpb:  # Apply mutation
