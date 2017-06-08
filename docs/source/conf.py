@@ -189,4 +189,8 @@ napoleon_use_rtype = True
 
 # InterSphinx Settings
 
-intersphinx_mapping = {'deap' : ('http://deap.readthedocs.io/en/latest', None)}
+intersphinx_mapping = {
+    'deap' : ('http://deap.readthedocs.io/en/latest', None),
+    'py2neo' : ('http://py2neo.org/v3/', None),
+    'graph_tool' : ('https://graph-tool.skewed.de/static/doc/', None)
+}

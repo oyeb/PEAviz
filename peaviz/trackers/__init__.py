@@ -1,4 +1,5 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from .tracker_base import TrackerBase, PEAvizTrackerAttributeError
+from .tracker_basic import TrackerBasic
+from peaviz.exceptions import PEAvizTrackerAttributeError

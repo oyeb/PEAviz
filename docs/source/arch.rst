@@ -8,17 +8,19 @@ Architecture
 PEAviz is composed of 3 elements, **Adapters**, **Trackers** and **Encoding strategy**.
 
 Adapter
-    Interface that implements all actions required to create the `Graph` representation and maintain it. This could be,
+    A module that implements all actions required to create the Graph data structure and maintain it. This could be,
     
-    * a graph-tool `Graph` or,
-    * a neo4j DB connection or,
-    * a Gephi_ GraphStream_ Object.
+    * a :class:`graph_tool.Graph` or,
+    * a neo4j DB connection via :mod:`py2neo` or,
+    * a Gephi_ GephiStreamer_ object *(see* GraphStream_ *)*.
+
+    All adapters conform to a minimal :ref:`interface <adapter_intf>`.
 
 Encoding Strategy
-    This details what an individual is, its attributes and when or how edges are created, whether they are directed or undirected, etc.
+    This details when and how individuals and edges are inserted in the network, whether the edges are directed or undirected, their semantics, etc.
 
 Tracker
-    Your GA creates an instance of this and connects it to the desired Adapter(s). Tracker uses the Encoding Strategy to invoke Adapter methods and create the desired evolutionary network.
+    Your GA creates an instance of this and connects it to the desired Adapter(s). The Tracker uses the chosen Encoding Strategy to invoke Adapter methods and create the desired evolutionary network.
 
 .. image:: ../images/PEAviz_arch.png
    :alt: Architecture diagram
@@ -64,5 +66,4 @@ on `IEEE Xplore <http://ieeexplore.ieee.org/abstract/document/6900441/>`_. The p
 .. [*] :red:`Red denotes future goals.`
 .. [*] :orange:`Orange denotes partial completion.`
 
-.. _Gephi: https://www.gephi.org
-.. _GraphStream: https://github.com/gephi/gephi/wiki/GraphStreaming
+.. _GephiStreamer: https://github.com/totetmatt/GephiStreamer

@@ -7,13 +7,7 @@ information is used to create the Complex Network.
 
 """
 
-class PEAvizTrackerAttributeError(TypeError):
-    """
-    Supplied attribute is not of type (``list`` or ``dict``) or the ``list``
-    is of incorrect size.
-    """
-
-class TrackerBase:
+class TrackerBasic:
     """
     A tracker connects with one or multiple adapters and this super class
     provides a clean, unified interface for tracking of all GA programs.
@@ -71,7 +65,6 @@ class TrackerBase:
             individual: The individual created using the
                         :func:`deap.creator.create() <deap:deap.creator.create>`.
             gen (int):  The generation in which the individual was created.
-
         Returns:
             int: The (unique) concrete ID of this individual.
         """
@@ -83,12 +76,11 @@ class TrackerBase:
     def update_fitness(self, ind_id, fitness):
         r"""
         Used to update/set fitness of an individual that has been
-        "\ :meth:`~peaviz.trackers.TrackerBase.deploy`\ ed".
+        "\ :meth:`~peaviz.trackers.TrackerBasic.deploy`\ ed".
 
         Args:
             ind_id (int): The individual (concrete) ID.
-            fitness: The new fitness.
-
+            fitness (object): The new fitness.
         Todo:
             Link ``fitness`` from glossary.
         """
@@ -97,12 +89,11 @@ class TrackerBase:
     def update_score(self, ind_id, score):
         r"""
         Used to update/set fitness of an individual that has been
-        "\ :meth:`~peaviz.trackers.TrackerBase.deploy`\ ed".
+        "\ :meth:`~peaviz.trackers.TrackerBasic.deploy`\ ed".
 
         Args:
             ind_id (int): The individual (concrete) ID.
-            fitness: The new score.
-
+            score (float or int): The new score.
         Todo:
             Link ``score`` from glossary.
         """
@@ -122,12 +113,15 @@ class TrackerBase:
         Note:
             ``other_attrs`` can be used in two ways,
 
-            #. If both edges must have the same attributes, just pass in a single dict.
+            #. If both edges must have the same attributes, just pass in a
+               single dict.
             #. Else provide a list(dict) with dicts in order corresponding to
                the order in ``parent_ids``.
-
         Returns:
             int: *Concrete* IDs of the edges.
+        Raises: 
+            ~peaviz.exceptions.PEAvizTrackerAttributeError:
+                If ``other_attrs`` is of wrong type and/or length.
         """
         if isinstance(other_attrs, dict):
             _other_attrs = [other_attrs]*len(parent_ids)
@@ -138,7 +132,11 @@ class TrackerBase:
 
         edge_ids = []
         for parent_id, other_attr in zip(parent_ids, _other_attrs):
-            edge_id = self.add_edge(TrackerBase.PARENT_TAG, parent_id, child_id, gen, other_attr)
+            edge_id = self.add_edge(TrackerBasic.PARENT_TAG,
+                                    parent_id,
+                                    child_id,
+                                    gen,
+                                    other_attr)
             edge_ids.append(edge_id)
         return edge_ids
 
@@ -160,14 +158,13 @@ class TrackerBase:
             individual (int): The individual
             gen (int): The generation
             attrs (dict): Any other attributes for the edge.
-
         Returns:
             int: *Concrete* ID of the inserted edge, if one was added, else None.
         """
         old_id = self.adapter.fetchIndivdual(individual)
         if old_id is not None:
-            last_id = self.adapter.walk_edge(TrackerBase.MIRROR_TAG, old_id)
-            edge_id = self.add_edge(TrackerBase.MIRROR_TAG, last_id, new_id, attrs)
+            last_id = self.adapter.walk_edge(TrackerBasic.MIRROR_TAG, old_id)
+            edge_id = self.add_edge(TrackerBasic.MIRROR_TAG, last_id, new_id, attrs)
             return edge_id
         else:
             return None
@@ -186,7 +183,6 @@ class TrackerBase:
             dest_id (int): The *concrete* ID of the destination individual.
             gen (int): The current generation.
             attrs (dict): Any other attributes for the edge.
-
         Returns:
             int: *Concrete* ID of the inserted edge.
         """
@@ -202,7 +198,7 @@ class TrackerBase:
             There might be multiple nodes encoding the same individual.
 
         Returns:
-            object: The :attr:`adapter <peaviz.trackers.TrackerBase.adapter>`'s
+            object: The :attr:`adapter <peaviz.trackers.TrackerBasic.adapter>`'s
             underlying ``Node`` object.
         """
         return self.adapter.getNode(ind_id)
@@ -211,9 +207,8 @@ class TrackerBase:
         """
         Args:
             edge_id (int): The *concrete* ID of the edge.
-
         Returns:
-            object: The :attr:`adapter <peaviz.trackers.TrackerBase.adapter>`'s
+            object: The :attr:`adapter <peaviz.trackers.TrackerBasic.adapter>`'s
             underlying ``Edge`` object.
         """
         return self.adapter.getEdge(edge_id)
@@ -231,9 +226,8 @@ class TrackerBase:
         Returns:
             int: The number of nodes in the :attr:`adapter`'s network/graph
             representation.
-
         Note:
             This is not the same as number of individuals evaluated/
             generated by the GA.
         """
-        return self.adapter.numNodes()
+        return self.adapter.num_nodes()

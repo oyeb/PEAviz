@@ -107,7 +107,7 @@ toolbox.register("mate", breedAndTrack, cxSet)
 toolbox.register("mutate", mutSet)
 toolbox.register("select", tools.selNSGA2)
 
-tracker = peaviz.trackers.TrackerBase(
+tracker = peaviz.trackers.TrackerBasic(
     peaviz.adapters.GraphAdapter,
     seed_str=str(SEED),
     name='small/knapsack0')

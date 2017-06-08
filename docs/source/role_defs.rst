@@ -44,3 +44,4 @@
 .. _DEAP: https://www.github.com/deap/deap
 .. _PEAviz: https://github.com/arrow-/PEAviz
 .. _Gephi: https://www.gephi.org
+.. _GraphStream : https://github.com/gephi/gephi/wiki/GraphStreaming

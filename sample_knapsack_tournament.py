@@ -8,9 +8,7 @@ from deap import base
 from deap import creator
 from deap import tools
 
-import peaviz.trackers
-import peaviz.adapters
-import peaviz.algorithms
+import peaviz
 
 IND_INIT_SIZE = 5
 MAX_ITEM = 50
@@ -106,7 +104,7 @@ toolbox.register("evaluate", evalKnapsack)
 toolbox.register("mate", breedAndTrack, cxSet)
 toolbox.register("mutate", mutSet)
 
-tracker = peaviz.trackers.TrackerBase(
+tracker = peaviz.trackers.TrackerBasic(
     peaviz.adapters.GraphAdapter,
     seed_str=str(SEED),
     name='knapsack_tournament')

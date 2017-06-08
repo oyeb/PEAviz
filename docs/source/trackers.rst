@@ -5,13 +5,13 @@ Trackers
 
 .. automodule:: peaviz.trackers
 
-Tracker super-class
--------------------
+Basic Tracker
+-------------
 
 .. autoclass:: peaviz.trackers.TrackerBase
    :members:
 
-Exceptions
-----------
+Related Exceptions
+******************
 
-.. autoexception:: peaviz.trackers.PEAvizTrackerAttributeError
+.. autoexception:: peaviz.exceptions.PEAvizTrackerAttributeError
