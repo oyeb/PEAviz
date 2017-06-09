@@ -1,5 +1,6 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+"""
+Exceptions of the PEAviz module
+"""
 
 class PEAvizTrackerAttributeError(TypeError):
     """

@@ -8,7 +8,7 @@ Trackers
 Basic Tracker
 -------------
 
-.. autoclass:: peaviz.trackers.TrackerBase
+.. autoclass:: peaviz.trackers.TrackerBasic
    :members:
 
 Related Exceptions

@@ -43,6 +43,10 @@ Elements
 
     - :green:`Default Strategy`
 
+-------------------------------------------------------------------------------
+
+.. _default_enc_strategy:
+
 Default Encoding Strategy
 -------------------------
 

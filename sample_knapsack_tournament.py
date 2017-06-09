@@ -1,5 +1,5 @@
 import random
-
+import importlib
 import numpy
 import operator
 
@@ -8,7 +8,13 @@ from deap import base
 from deap import creator
 from deap import tools
 
-import peaviz
+import peaviz.trackers
+import peaviz.adapters
+import peaviz.algorithms
+
+if importlib.util.find_spec('graph_tool') is None:
+    print('graph_tool is not installed in your python environment,\n\
+         You will not be able to use peaviz.adapters.GraphAdapter')
 
 IND_INIT_SIZE = 5
 MAX_ITEM = 50

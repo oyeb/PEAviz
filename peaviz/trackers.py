@@ -1,43 +1,41 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
 """
-Track evolution dynamics like individual interactions, fitness statistics. This
-information is used to create the Complex Network.
+Track evolution dynamics like interactions between individuals, fitness
+statistics. This information is used to create the Complex Network.
 
+A :mod:`tracker <peaviz.trackers>` connects with one or more
+:mod:`~peaviz.adapters` and
+provides a clean interface for tracking of *all* GA programs.
+
+Trackers must:
+
+#. Connect to one of the :mod:`~peaviz.adapters`
+#. Bind an individual of the population with the adapter's data structure using
+   a (unique) ``integer`` ID.
+#. Provide a means to update an individual's
+    - fitness vector
+    - score
+    - parents
+#. Provide access the adapter's underlying ``node`` and ``edge``
+   objects.
+#. Provide a method to save/commit the network in/of the adapter to a
+   persistent storage
+
+Todo:
+    #. :strike:`This ain't no base class!`
+    #. Must allow connection with multiple adapters!
+    #. Make definition in glossary for ``fitness``, ``score``.
+    #. Expose multiple raw nodes which all represent the same individual.
 """
 
 class TrackerBasic:
     """
-    A tracker connects with one or multiple adapters and this super class
-    provides a clean, unified interface for tracking of all GA programs.
-
-    Trackers must:
-
-    #. Bind an individual of the population with the :attr:`adapter`'s data
-       structure using a (unique) ``integer`` ID.
-    #. Provide a means to update an individual's
-
-        - fitness vector
-        - score
-        - parents
-    #. Provide access the :attr:`adapter`'s underlying ``node`` and ``edge``
-       objects.
-    #. Provide a method to save/commit the network in/of the :attr:`adapter` to a
-       persistent storage
-
-    Todo:
-        #. :red:`This ain't no base class!`
-        #. Must allow connection with multiple adapters!
-        #. Make definition in glossary for ``fitness``, ``score``.
-        #. Expose multiple raw nodes which all represent the same individual.
+    This simple tracker is implemented for the :ref:`default_enc_strategy`.
     """
 
     #: ``EVOLVE`` Edge type.
     MIRROR_TAG = 'EVOLVE'
     #: ``PARENT_OF`` Edge type.
     PARENT_TAG = 'PARENT_OF'
-
     __attrs__ = ['adapter']
 
     def __init__(self, adapter_class, **kwargs):
@@ -45,7 +43,8 @@ class TrackerBasic:
         **Constructor**
 
         Args:
-            adapter_class (peaviz.adapters.AdapterBase) : The adapter class to use with the Tracker
+            adapter_class (peaviz.adapters.AdapterBase) : The adapter class to
+            use with the Tracker
         Keyword Args:
             kwargs: Passed directly to the constructor of ``adapter_class``.
         """
@@ -63,7 +62,7 @@ class TrackerBasic:
 
         Args:
             individual: The individual created using the
-                        :func:`deap.creator.create() <deap:deap.creator.create>`.
+                    :func:`deap.creator.create() <deap:deap.creator.create>`.
             gen (int):  The generation in which the individual was created.
         Returns:
             int: The (unique) concrete ID of this individual.
@@ -119,7 +118,7 @@ class TrackerBasic:
                the order in ``parent_ids``.
         Returns:
             int: *Concrete* IDs of the edges.
-        Raises: 
+        Raises:
             ~peaviz.exceptions.PEAvizTrackerAttributeError:
                 If ``other_attrs`` is of wrong type and/or length.
         """
@@ -159,12 +158,16 @@ class TrackerBasic:
             gen (int): The generation
             attrs (dict): Any other attributes for the edge.
         Returns:
-            int: *Concrete* ID of the inserted edge, if one was added, else None.
+            int: *Concrete* ID of the inserted edge, if one was added, else
+                 None.
         """
-        old_id = self.adapter.fetchIndivdual(individual)
+        old_id = self.adapter.get_indivdual(individual)
         if old_id is not None:
             last_id = self.adapter.walk_edge(TrackerBasic.MIRROR_TAG, old_id)
-            edge_id = self.add_edge(TrackerBasic.MIRROR_TAG, last_id, new_id, attrs)
+            edge_id = self.add_edge(TrackerBasic.MIRROR_TAG,
+                                    last_id,
+                                    new_id,
+                                    attrs)
             return edge_id
         else:
             return None
@@ -198,20 +201,20 @@ class TrackerBasic:
             There might be multiple nodes encoding the same individual.
 
         Returns:
-            object: The :attr:`adapter <peaviz.trackers.TrackerBasic.adapter>`'s
+            object: The :attr:`~peaviz.trackers.TrackerBasic.adapter`'s
             underlying ``Node`` object.
         """
-        return self.adapter.getNode(ind_id)
+        return self.adapter.get_node(ind_id)
 
     def get_raw_edge(self, edge_id):
         """
         Args:
             edge_id (int): The *concrete* ID of the edge.
         Returns:
-            object: The :attr:`adapter <peaviz.trackers.TrackerBasic.adapter>`'s
+            object: The :attr:`~peaviz.trackers.TrackerBasic.adapter`'s
             underlying ``Edge`` object.
         """
-        return self.adapter.getEdge(edge_id)
+        return self.adapter.get_edge(edge_id)
 
     def save(self):
         """

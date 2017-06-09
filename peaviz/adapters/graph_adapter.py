@@ -1,6 +1,3 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
 import os.path
 from graph_tool import Graph
 from peaviz.exceptions import PEAvizAdapterAttributeError

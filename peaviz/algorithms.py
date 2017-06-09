@@ -1,8 +1,12 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
 """
-copied from deap basically
+The variation operators in this module: :func:`varOr`, :func:`varAnd` have been
+taken from :mod:`deap.algorithms`.
+
+Trackers require that the evolution operations registered in
+:class:`~deap.base.Toolbox` must do extra bookkeeping like noting the
+generation number, any other attributes. The modifications made here allow the
+operators to work with Trackers properly as they pass the generation number,
+other attributes to the :class:`~deap.base.Toolbox`.
 """
 
 import random
@@ -27,8 +31,8 @@ def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
     The variation goes as follow. First, the parental population
     :math:`P_\mathrm{p}` is duplicated using the :meth:`toolbox.clone` method
     and the result is put into the offspring population :math:`P_\mathrm{o}`.
-    A first loop over :math:`P_\mathrm{o}` is executed to mate pairs of consecutive
-    individuals. According to the crossover probability *cxpb*, the
+    A first loop over :math:`P_\mathrm{o}` is executed to mate pairs of
+    consecutive individuals. According to the crossover probability *cxpb*, the
     individuals :math:`\mathbf{x}_i` and :math:`\mathbf{x}_{i+1}` are mated
     using the :meth:`toolbox.mate` method. The resulting children
     :math:`\mathbf{y}_i` and :math:`\mathbf{y}_{i+1}` replace their respective
@@ -109,7 +113,8 @@ def varOr(population, toolbox, lambda_, cxpb, mutpb, generation, otherAttrs={}):
         #. Added parameters ``generation`` and ``otherAttrs``.
     """
     assert (cxpb + mutpb) <= 1.0, ("The sum of the crossover and mutation "
-                                   "probabilities must be smaller or equal to 1.0.")
+                                   "probabilities must be smaller or equal to\
+                                   1.0.")
 
     offspring = []
     for _ in range(lambda_):

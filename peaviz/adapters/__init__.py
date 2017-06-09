@@ -1,9 +1,12 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+"""
+The :mod:`~peaviz.adapters` module contains all the adapters which are
+compatible with all the trackers in :mod:`~peaviz.trackers`.
+"""
 
 import importlib
 
-from .adapter_base import AdapterBase
-
 if importlib.util.find_spec('graph_tool') is not None:
-    from .graph_adapter import GraphAdapter
+    try:
+        from .graph_adapter import GraphAdapter
+    except ImportError:
+        pass
