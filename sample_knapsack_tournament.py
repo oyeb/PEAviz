@@ -111,7 +111,7 @@ toolbox.register("mate", breedAndTrack, cxSet)
 toolbox.register("mutate", mutSet)
 
 tracker = peaviz.trackers.TrackerBasic(
-    peaviz.adapters.GraphAdapter,
+    peaviz.adapters.GraphToolAdapter,
     seed_str=str(SEED),
     name='knapsack_tournament')
 

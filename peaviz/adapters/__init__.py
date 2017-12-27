@@ -7,6 +7,6 @@ import importlib
 
 if importlib.util.find_spec('graph_tool') is not None:
     try:
-        from .graph_adapter import GraphAdapter
+        from .gt_adapter import GraphToolAdapter
     except ImportError:
         pass

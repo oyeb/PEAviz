@@ -1,3 +1,5 @@
+from peaviz.exceptions import PEAvizTrackerAttributeError
+
 """
 Track evolution dynamics like interactions between individuals, fitness
 statistics. This information is used to create the Complex Network.
@@ -21,10 +23,10 @@ Trackers must:
    persistent storage
 
 Todo:
-    #. :strike:`This ain't no base class!`
     #. Must allow connection with multiple adapters!
     #. Make definition in glossary for ``fitness``, ``score``.
     #. Expose multiple raw nodes which all represent the same individual.
+    #. :strike:`This ain't no base class!`
 """
 
 class TrackerBasic:
@@ -66,6 +68,8 @@ class TrackerBasic:
             gen (int):  The generation in which the individual was created.
         Returns:
             int: The (unique) concrete ID of this individual.
+        Todo:
+            Not every generated individual must be added to the graph ASAP.
         """
         concrete_id = self.adapter.add_node(
             gene=individual,
@@ -105,7 +109,7 @@ class TrackerBasic:
         Args:
             child_id (int): The child ID
             parent_ids (int): The parent IDs (``list``)
-            other_attrs: The attributes of the edges
+            other_attrs: Any other attributes of the edges.
 
         :type other_attrs: list(dict) or dict
 
@@ -167,6 +171,7 @@ class TrackerBasic:
             edge_id = self.add_edge(TrackerBasic.MIRROR_TAG,
                                     last_id,
                                     new_id,
+                                    gen,
                                     attrs)
             return edge_id
         else:

@@ -75,7 +75,7 @@ Adapter Interface
    label ``tag`` is reached and return it.
 
    :param str tag: The primary label of the edges which are to be traversed.
-   :param str start_id: The *concrete* ID of the node where the *walk* is
+   :param int start_id: The *concrete* ID of the node where the *walk* is
                         initiated.
    :returns: The adapter's internal ``Node`` object that was *walked*
              upon.
@@ -130,6 +130,6 @@ Related Exceptions
 ``graph-tool`` Adapter
 ----------------------
 
-.. autoclass:: peaviz.adapters.GraphAdapter
+.. autoclass:: peaviz.adapters.GraphToolAdapter
    :members:
-
+   :undoc-members: set_props

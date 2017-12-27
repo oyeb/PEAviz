@@ -114,7 +114,7 @@ toolbox.register("mutate", mutSet)
 toolbox.register("select", tools.selNSGA2)
 
 tracker = peaviz.trackers.TrackerBasic(
-    peaviz.adapters.GraphAdapter,
+    peaviz.adapters.GraphToolAdapter,
     seed_str=str(SEED),
     name='small/knapsack0')
 

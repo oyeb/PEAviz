@@ -11,7 +11,7 @@ other attributes to the :class:`~deap.base.Toolbox`.
 
 import random
 
-def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
+def varAnd(population, toolbox, cxpb, mutpb, generation, other_attrs={}):
     r"""Part of an evolutionary algorithm applying only the variation part
     (crossover **and** mutation). The modified individuals have their
     fitness invalidated. The individuals are cloned so returned population is
@@ -23,7 +23,7 @@ def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
     :param cxpb: The probability of mating two individuals.
     :param mutpb: The probability of mutating an individual.
     :param generation: The current evolution generation, needed for tracking.
-    :param otherAttrs: Any other optional attributes for all `PARENT_OF` edges
+    :param other_attrs: Any other optional attributes for all `PARENT_OF` edges
                        in this generation.
     :returns: A list of varied individuals that are independent of their
               parents.
@@ -52,7 +52,7 @@ def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
     .. important::
         List of modifications,
 
-        #. Added parameters ``generation`` and ``otherAttrs``.
+        #. Added parameters ``generation`` and ``other_attrs``.
     """
     offspring = [toolbox.clone(ind) for ind in population]
 
@@ -62,7 +62,7 @@ def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
             offspring[i - 1], offspring[i] = toolbox.mate(
                 offspring[i - 1], offspring[i],
                 generation=generation,
-                otherAttrs=otherAttrs)
+                other_attrs=other_attrs)
             del offspring[i - 1].fitness.values, offspring[i].fitness.values
 
     for i in range(len(offspring)):
@@ -72,7 +72,7 @@ def varAnd(population, toolbox, cxpb, mutpb, generation, otherAttrs={}):
 
     return offspring
 
-def varOr(population, toolbox, lambda_, cxpb, mutpb, generation, otherAttrs={}):
+def varOr(population, toolbox, lambda_, cxpb, mutpb, generation, other_attrs={}):
     r"""Part of an evolutionary algorithm applying only the variation part
     (crossover, mutation **or** reproduction). The modified individuals have
     their fitness invalidated. The individuals are cloned so returned
@@ -84,6 +84,9 @@ def varOr(population, toolbox, lambda_, cxpb, mutpb, generation, otherAttrs={}):
     :param lambda\_: The number of children to produce
     :param cxpb: The probability of mating two individuals.
     :param mutpb: The probability of mutating an individual.
+    :param generation: The current evolution generation, needed for tracking.
+    :param other_attrs: Any other optional attributes for all `PARENT_OF` edges
+                       in this generation.
     :returns: The final population
     :returns: A :class:`~deap.tools.Logbook` with the statistics of the
               evolution
@@ -110,7 +113,7 @@ def varOr(population, toolbox, lambda_, cxpb, mutpb, generation, otherAttrs={}):
     .. important::
         List of modifications,
 
-        #. Added parameters ``generation`` and ``otherAttrs``.
+        #. Added parameters ``generation`` and ``other_attrs``.
     """
     assert (cxpb + mutpb) <= 1.0, ("The sum of the crossover and mutation "
                                    "probabilities must be smaller or equal to\
@@ -123,7 +126,7 @@ def varOr(population, toolbox, lambda_, cxpb, mutpb, generation, otherAttrs={}):
             ind1, ind2 = map(toolbox.clone, random.sample(population, 2))
             ind1, ind2 = toolbox.mate(ind1, ind2,
                                       generation=generation,
-                                      otherAttrs=otherAttrs)
+                                      other_attrs=other_attrs)
             del ind1.fitness.values
             offspring.append(ind1)
         elif op_choice < cxpb + mutpb:  # Apply mutation
